@@ -1,6 +1,6 @@
 package main
 
-import "master-your-life/activity-producer/cmd/producer"
+import producerCmd "github.com/MasterYourLife/back/activity-producer/cmd/producer"
 
 var (
 	BinaryName    string = "activity-producer"

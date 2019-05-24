@@ -1,10 +1,7 @@
 package influx
 
 import (
-	"encoding/json"
 	"fmt"
-	"strconv"
-	"time"
 
 	"github.com/influxdata/influxdb1-client/v2"
 	log "github.com/sirupsen/logrus"

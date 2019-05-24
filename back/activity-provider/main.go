@@ -1,6 +1,6 @@
 package main
 
-import "master-your-life/activity-provider/cmd/provider"
+import providerCmd "github.com/MasterYourLife/back/activity-provider/cmd/provider"
 
 var (
 	BinaryName    string = "activity-provider"

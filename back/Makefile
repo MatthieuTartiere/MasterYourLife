@@ -16,8 +16,8 @@ LDFLAGS=-w -s -X 'main.version=$(VERSION)' -X 'main.buildDateTime=$(BUILD_DATETI
 BUILD_FLAGS=-a -installsuffix cgo --tags satic -ldflags "$(LDFLAGS)"
 
 IMAGE_TAG=latest
-TARGET=$(GOPATH)/src/master-your-life/target
-PROJECT_PATH=$(GOPATH)/src/master-your-life
+TARGET=$(GOPATH)/src/github.com/MasterYourLife/back/target
+PROJECT_PATH=$(GOPATH)/src/github.com/MasterYourLife
 
 ACTIVITY_MANAGER_BINARY_NAME=activity-manager
 ACTIVITY_PRODUCER_BINARY_NAME=activity-producer

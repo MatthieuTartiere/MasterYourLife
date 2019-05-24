@@ -1,6 +1,6 @@
 package main
 
-import "master-your-life/activity-manager/cmd/manager"
+import managerCmd "github.com/MasterYourLife/back/activity-manager/cmd/manager"
 
 var (
 	BinaryName    string = "activity-manager"

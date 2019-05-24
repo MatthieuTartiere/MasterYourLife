@@ -1,6 +1,6 @@
 package main
 
-import "master-your-life/user-manager/cmd/manager"
+import userManagerCmd "github.com/MasterYourLife/back/user-manager/cmd/manager"
 
 var (
 	BinaryName    string = "user-manager"

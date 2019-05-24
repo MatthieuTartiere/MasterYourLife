@@ -5,7 +5,6 @@ import (
 	"strings"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	import influx "master-your-life/activity-manager/internal/influx"
 )
 
 var (
@@ -41,9 +40,9 @@ func dumpAppInfo() {
 var RootCmd = &cobra.Command{
 	Use: BinaryName,
 	Run: func(cmd *cobra.Command, args []string) {
-		client := influx.Connect(conf.InfluxHostname, conf.InfluxServerPort)
+	//	client := influx.Connect(conf.InfluxHostname, conf.InfluxServerPort)
 		// call processing here
-		client.Close()
+	//	client.Close()
 		fmt.Println("fin du job. au-revoir.")
 	},
 }

@@ -1,7 +1,6 @@
 package main
 
-import "master-your-life/goals-manager/cmd/manager"
-
+import goalsManagerCmd "github.com/MasterYourLife/back/goals-manager/cmd/manager"
 
 var (
 	BinaryName    string = "goals-manager"
