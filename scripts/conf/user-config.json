@@ -1,0 +1,9 @@
+{
+  "username": "user",
+  "enabled": true,
+  "credentials": [{
+    "type": "password",
+    "value": "myl"
+  }],
+  "realmRoles": ["user"]
+}

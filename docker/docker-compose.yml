@@ -1,0 +1,140 @@
+version: '3'
+
+services:
+
+  front:
+    build: ../front
+    container_name: front
+    ports:
+    - "8888:80"
+    networks:
+    - internal
+
+  activity-manager:
+    build: ../back/activity-manager/docker
+    container_name: activity-manager
+    networks:
+    - internal
+    - internal-data-storage
+
+  activity-producer:
+    build: ../back/activity-producer/docker
+    container_name: activity-producer
+    networks:
+    - internal
+    - kafka-network
+
+
+  activity-provider:
+    build: ../back/activity-provider/docker
+    container_name: activity-provider
+    networks:
+    - internal
+    - internal-metadata-storage
+
+
+  goals-manager:
+    build: ../back/goals-manager/docker
+    container_name: goals-manager
+    networks:
+    - internal
+    - internal-metadata-storage
+
+
+  user-manager:
+    build: ../back/user-manager/docker
+    container_name: user-manager
+    networks:
+    - internal
+    - internal-metadata-storage
+
+  influxdb:
+    image: "influxdb:1.7.6"
+    container_name: "influxdb"
+    networks:
+     - internal-data-storage
+    ports:
+     - "8086:8086"
+     - "8083:8083"
+     - "8088:8088"
+     - "25826:25826"
+    volumes:
+     - ./influxdb.conf:/etc/influxdb/influxdb.conf:ro
+     - .types.db:/usr/share/collectd/types.db
+
+postgres:
+    image: postgres
+    container_name: postgres
+    volumes:
+    - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: postgres 
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    networks:
+      - internal-metadata-storage
+
+  postgres-kc:
+    image: postgres
+    container_name: postgres-kc
+    volumes:
+    - postgres_kc_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    networks:
+      - security
+
+  keycloak:
+    image: jboss/keycloak:4.8.3.Final
+    container_name: auth
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_PASSWORD: password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
+      #JDBC_PARAMS: "ssl=true"
+    ports:
+    - 8080:8080
+    depends_on:
+    - postgres
+    networks:
+    - internal
+    - security
+
+    kafka:
+    image: wurstmeister/kafka:1.0.0
+    container_name: kafka
+    restart: always
+    networks:
+      - kafka-network
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: ${KAFKA_URI}
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    ports:
+      - "9092:9092"
+
+  zookeeper:
+    image: wurstmeister/zookeeper:3.4.6
+    container_name: zookeeper
+    restart: always
+    networks:
+      - kafka-network
+    ports:
+      - "2181:2181"
+
+networks:
+  internal:
+  security:
+  internal-data-storage:
+  internal-metadata-storage:
+  kafka-network:
+
+volumes:
+  postgres_data:
+    driver: local
